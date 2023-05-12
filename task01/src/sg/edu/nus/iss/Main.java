@@ -14,8 +14,8 @@ public class Main {
 
         while (!inputArray[0].equalsIgnoreCase("exit")) {
 
-            int num1 = Integer.parseInt(inputArray[0]);
-            int num2 = Integer.parseInt(inputArray[2]);
+            double num1 = Double.parseDouble(inputArray[0]);
+            double num2 = Double.parseDouble(inputArray[2]);
 
             if (inputArray[1].equals("+")) {
                 System.out.println(num1 + num2);
