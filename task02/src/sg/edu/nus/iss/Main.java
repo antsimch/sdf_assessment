@@ -27,6 +27,7 @@ public class Main {
 
             for (int j = 0; j < files.length; j++) {
 
+                System.out.println();
                 System.out.println(files[j].getName());
                 CorpusToText myText = new CorpusToText(files[j]);
 

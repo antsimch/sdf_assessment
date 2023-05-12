@@ -30,13 +30,11 @@ public class CorpusToText {
             while ((line = br.readLine()) != null) {
    
                 // remove punctuation and convert to lower case and add to list
-
+                
                 String[] lineArray = line.toLowerCase().replaceAll("\\p{Punct}", "").split("\\s+");
 
-                System.out.println("after " + line);
-
                 for (String s : lineArray) {
-                    text.add(s);
+                    text.add(s.replaceAll("[^a-zA-Z]", ""));    // remove weird question mark characters before mapping to list
                 }
             }
 
