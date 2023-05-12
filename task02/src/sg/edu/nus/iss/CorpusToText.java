@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 public class CorpusToText {
 
@@ -26,32 +25,37 @@ public class CorpusToText {
             FileReader fr = new FileReader(filePath);
             BufferedReader br = new BufferedReader(fr);
             
-            String line = "";
-
-            Scanner scan = new Scanner(line);
+            String line = "";         
    
             while ((line = br.readLine()) != null) {
    
-                line = line.replaceAll("\\p{Punct}", "");
+                // remove punctuation and convert to lower case and add to list
 
-                text.add(scan.next());                    
+                String[] lineArray = line.toLowerCase().replaceAll("\\p{Punct}", "").split("\\s+");
+
+                System.out.println("after " + line);
+
+                for (String s : lineArray) {
+                    text.add(s);
+                }
             }
 
-            scan.close();
             br.close();
             fr.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void compute(List<String> text) {
+    public void compute() {
         
-        // map the text into a Hashmap<HashMap<String, Double>>
+        // map the ArrayList of words into a Hashmap<HashMap<String, Double>>
         for (int i = 0; i < text.size() - 1; i++) {
 
-            words.computeIfAbsent(text.get(i), v -> new HashMap<String, Double>());
-            words.get(text.get(i)).put(text.get(i + 1), (words.get(text.get(i)).get(text.get(i + 1)) + 1));
+            words.computeIfAbsent(text.get(i), k -> new HashMap<String, Double>());
+            words.get(text.get(i)).computeIfPresent(text.get(i + 1), (k, v) -> v + 1);
+            words.get(text.get(i)).computeIfAbsent(text.get(i + 1), k -> 1.0);
         }
 
         // compute probability
@@ -71,13 +75,16 @@ public class CorpusToText {
         }
     }
 
+    public void print() {
 
-        // while (scanFast.hasNext()) {
-            
-        //     String wordFirst = scanSlow.next();
-        //     String wordSecond = scanFast.next();
-            
+        for (String key : words.keySet()) {
 
-        // }
+            System.out.println(key);
 
+            for (String keyInnerMap : words.get(key).keySet()) {
+
+                System.out.printf("\t\t%s\t\t%f\n", keyInnerMap, words.get(key).get(keyInnerMap));
+            }
+        }
+    }
 }
